@@ -25,6 +25,8 @@
             :headers="headers"
             :items="food"
             must-sort
+            no-data-text="test"
+            no-results-text="No results"
           >
             <template #body="{ items }">
               <tr
@@ -130,8 +132,26 @@ export default {
     }
   },
   methods: {
-    addToBasket() {
-      console.log('adding to basket');
+    async addToBasket(item) {
+      let itemToAdd = item;
+      
+      const { data } = await this.axios.get('https://api.nal.usda.gov/ndb/V2/reports', {
+        params :{
+          api_key: this.apiKey,
+          ndbno: item.ndbno,
+        }
+      })
+      let [{ value }] = data.foods[0].food.nutrients.filter( ({ name }) => {
+        return name === 'Energy'
+      })
+      
+      itemToAdd.calories = Number(value);
+
+        this.$store.dispatch('addBasketItem', itemToAdd)
+        
+        if (!this.$store.state.basket.show) {
+          this.$store.dispatch('toggleBasket')
+        }
     },
     async fetchFoodsList() {
       try {
@@ -142,10 +162,16 @@ export default {
             q: this.search,
           }
         })
+
+        if (data.list === undefined) {
+          this.isLoading = false
+          alert('Unable to find food. Try searching for something else!');
+          return;
+        }
         this.food = data.list.item;
         this.isLoading = false
-
       } catch (err) {
+        alert('Oops! An error occurred when attempting to fetch your food data.');
         console.log(err);
       }
     },
