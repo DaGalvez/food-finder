@@ -38,6 +38,12 @@
         type="warning"
       >Your cart is empty.
       </v-alert>
+
+      <template #append>
+        <div class="text-center grey--text text--darken-1">
+          <b>Total Calories: </b> {{ totalCalorieCount }}
+        </div>
+      </template>
       
     </v-navigation-drawer>
   </div>
@@ -56,6 +62,9 @@ export default {
     basketItems() {
       return this.$store.state.basket.items
     },
+    totalCalorieCount() {
+      return this.$store.getters.calorieCount
+    }
   },
   methods: {
     removeFromBasket(itemIndex) {

@@ -32,6 +32,16 @@ export default new Vuex.Store({
       context.commit('removeBasketItem', itemIndex)
     }
   },
+  getters: {
+    calorieCount: state => {
+      let calorieCount = 0;
+
+      state.basket.items.forEach(({ calories }) => {
+        calorieCount += Number(calories)
+      })
+      return calorieCount;
+    }
+  }
 })
 
 
