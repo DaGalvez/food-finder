@@ -25,8 +25,6 @@
             :headers="headers"
             :items="food"
             must-sort
-            no-data-text="test"
-            no-results-text="No results"
           >
             <template #body="{ items }">
               <tr
@@ -140,6 +138,9 @@ export default {
       isLoading: false,
       search: '',
     }
+  },
+  mounted() {
+    this.fetchFoodsList()
   },
   methods: {
     async addToBasket(item) {
