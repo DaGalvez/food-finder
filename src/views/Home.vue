@@ -38,14 +38,24 @@
                 <td>{{ item.manu }}</td>
                 <td>{{ item.group }}</td>
                 <td>
-                  <v-icon
+                  <v-btn
+                    fab
+                    icon
                     small
+                    class="mr-2"
                     @click="viewInfo(item)"
-                  >info</v-icon>
-                  <v-icon
+                  >
+                    <v-icon small>info</v-icon>
+                  </v-btn>
+                  
+                  <v-btn
+                    fab
+                    icon
                     small
                     @click="addToBasket(item)"
-                  >add</v-icon>
+                  >
+                    <v-icon small>add_shopping_cart</v-icon>
+                  </v-btn>
                 </td>
               </tr>
             </template>

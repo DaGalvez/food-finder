@@ -10,7 +10,7 @@
       temporary
       @input="updateStore"
     >
-      <h1 class="mb-5">Your Cart</h1>
+      <h1 class="mb-5">Your Cart <span class="grey--text subtitle-1 ml-2">({{ basketItems.length }})</span></h1>
       <v-divider class="mb-5" />
       <v-list v-if="basketItems.length > 0">
         <v-list-item
