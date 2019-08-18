@@ -11,6 +11,9 @@ export default new Vuex.Store({
 
   },
   actions: {
-
+    
   }
 })
+
+
+// api key: FBblnKj2CXcqdkpanPbSuaJ1Sqd2q9IMEDNMWIRWF
