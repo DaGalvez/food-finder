@@ -40,7 +40,7 @@ export default {
     snackbar: {
       show: false,
       text: '',
-      timeout: 1500,
+      timeout: 2500,
       color: 'blue',
     }
   }),

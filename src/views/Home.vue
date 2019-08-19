@@ -146,26 +146,36 @@ export default {
     async addToBasket(item) {
       let itemToAdd = item;
       
-      const { data } = await this.axios.get('https://api.nal.usda.gov/ndb/V2/reports', {
-        params :{
-          api_key: this.apiKey,
-          ndbno: item.ndbno,
-        }
-      })
-      let [{ value }] = data.foods[0].food.nutrients.filter( ({ name }) => {
-        return name === 'Energy'
-      })
-      
-      itemToAdd.calories = Number(value);
+      try {
+        const { data } = await this.axios.get('https://api.nal.usda.gov/ndb/V2/reports', {
+          params :{
+            api_key: this.apiKey,
+            ndbno: item.ndbno,
+          }
+        })
+        let [{ value }] = data.foods[0].food.nutrients.filter( ({ name }) => {
+          return name === 'Energy'
+        })
+        
+        itemToAdd.calories = Number(value);
 
-      this.$store.dispatch('addBasketItem', itemToAdd)
+        this.$store.dispatch('addBasketItem', itemToAdd)
+        
+        // example event emission, could've done in vuex
+        this.promptSnackbar('Added item to shopping cart!', 'blue')
+      } catch (err) {
+        this.promptSnackbar(`Oops! Couldn't add item to shopping cart.`, 'red')
+      }
       
+      
+        
+    },
+    promptSnackbar(text, color) {
       this.$emit('prompt-snackbar', {
         show: true,
-        text: 'Added item to shopping cart!',
-        color: 'blue',
+        text,
+        color,
       })
-        
     },
     async fetchFoodsList() {
       try {
@@ -179,14 +189,13 @@ export default {
 
         if (data.list === undefined) {
           this.isLoading = false
-          alert('Unable to find food. Try searching for something else!');
+          this.promptSnackbar(`Unable to find food. Try searching for something else!.`, 'orange')
           return;
         }
         this.food = data.list.item;
         this.isLoading = false
       } catch (err) {
-        alert('Oops! An error occurred when attempting to fetch your food data.');
-        console.log(err);
+        this.promptSnackbar(`An error occurred when attempting to fetch your food data.`, 'red')
       }
     },
     async viewInfo(food) {
@@ -201,7 +210,7 @@ export default {
         this.foodInfoDialog.name = food.name 
         this.foodInfoDialog.nutrients = data.foods[0].food.nutrients
       } catch (err) {
-        console.log(err);
+        this.promptSnackbar(`An error occurred when attempting to fetch your food data.`, 'red')
       }
     },
   },

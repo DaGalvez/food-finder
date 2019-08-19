@@ -6,7 +6,6 @@
       src="https://cdn.pixabay.com/photo/2017/06/07/06/13/food-2379472_1280.jpg"
     >
       <v-spacer />
-
       <v-badge
           :bottom="false"
           :color="'blue'"
@@ -19,8 +18,12 @@
             v-slot:badge>
             <span>{{ basketItems.length }}</span>
           </template>
-      
-      <v-icon @click="toggleBasket">shopping_basket</v-icon>
+        <v-btn
+          color="orange" fab dark small
+          @click="toggleBasket"
+        >
+          <v-icon>shopping_basket</v-icon>
+        </v-btn>
       </v-badge>
     </v-toolbar>
   </div>
