@@ -95,6 +95,8 @@ export default {
   name: 'Home',
   data() {
     return {
+      // in prod this would be store in
+      // an encrypted file via `git-secret`
       apiKey: 'vJ4ZIsrG1w7KxT6g6hmztEUu2rR8VlKRSEOkinqb',
       food: [],
       foodInfoDialog: {
