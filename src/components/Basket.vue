@@ -56,8 +56,13 @@ export default {
     }
   },
   computed: {
-    showBasket() {
-      return this.$store.state.basket.show
+    showBasket: {
+      get() {
+        return this.$store.state.basket.show
+      },
+      set() {
+        return false
+      }
     },
     basketItems() {
       return this.$store.state.basket.items

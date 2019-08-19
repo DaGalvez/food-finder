@@ -8,8 +8,27 @@
 
     <!-- views -->
     <v-container>
-      <router-view name="default" />
+      <router-view
+        name="default"
+        @prompt-snackbar="promptSnackbar"
+      />
     </v-container>
+
+    <!-- notification snacks -->
+    <v-snackbar
+      v-model="snackbar.show"
+      :timeout="snackbar.timeout"
+      top
+    >
+      {{ snackbar.text }}
+      <v-btn
+        :color="snackbar.color"
+        text
+        @click="snackbar.show = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -18,7 +37,19 @@
 export default {
   name: 'App',
   data: () => ({
-    //
+    snackbar: {
+      show: false,
+      text: '',
+      timeout: 1500,
+      color: 'blue',
+    }
   }),
+  methods: {
+    promptSnackbar({ show, text, color }) {
+      this.snackbar.show = show
+      this.snackbar.text = text
+      this.snackbar.color = color
+    },
+  },
 };
 </script>

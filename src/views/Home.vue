@@ -28,8 +28,8 @@
           >
             <template #body="{ items }">
               <tr
-                v-for="item in items"
-                :key="item.name"
+                v-for="(item, i) in items"
+                :key="i"
                 mb-1
               >
                 <td style="max-width: 300px;">{{ item.name }}</td>
@@ -158,11 +158,14 @@ export default {
       
       itemToAdd.calories = Number(value);
 
-        this.$store.dispatch('addBasketItem', itemToAdd)
+      this.$store.dispatch('addBasketItem', itemToAdd)
+      
+      this.$emit('prompt-snackbar', {
+        show: true,
+        text: 'Added item to shopping cart!',
+        color: 'blue',
+      })
         
-        if (!this.$store.state.basket.show) {
-          this.$store.dispatch('toggleBasket')
-        }
     },
     async fetchFoodsList() {
       try {
@@ -187,7 +190,6 @@ export default {
       }
     },
     async viewInfo(food) {
-      console.log(food);
       try {
         this.foodInfoDialog.show = true;
         const { data } = await this.axios.get('https://api.nal.usda.gov/ndb/V2/reports', {
@@ -196,10 +198,8 @@ export default {
             ndbno: food.ndbno,
           }
         })
-        console.log(data);
         this.foodInfoDialog.name = food.name 
         this.foodInfoDialog.nutrients = data.foods[0].food.nutrients
-        console.log(this.foodInfoDialog.nutrients)
       } catch (err) {
         console.log(err);
       }
